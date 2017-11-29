@@ -11,9 +11,9 @@
 01E9   LXI  H   #$2000  //loads H-register with value #$20 and the L-register with the value #$00(together: start address of work-RAM)
 01EC   JMP       $1A32  //Jumps to memorycell $1A32
 
-1A32   LDAX D //loads A-register (accumulator) with the value of registers D(most significant 8 bits) and E(least significant 8 bits), on first run this is #$1B00
-1A33   MOV  M,A
-1A34   INX  H
-1A35   INX  D
-1A36   DCR  B
-1A37   JNZ       $1A32
+1A32   LDAX D //loads A-register (accumulator) with the value of registers D(most significant 8 bits) and E(least significant 8 bits), on first run: A = #$1B00
+1A33   MOV  M,A //puts the value of A into M, on first run: M = A(#$1B00)
+1A34   INX  H // increment H and L, on first run H = #$21 L = #$01
+1A35   INX  D // increment D and E, on first run D = #$1C E = #$01
+1A36   DCR  B // decrement B, on first run B = #$FF
+1A37   JNZ       $1A32  // jump to address $1A32(beginning of this block) if the last calculation != 0. (this will loop 256 times)
