@@ -1,0 +1,19 @@
+0000   NOP
+0001   NOP
+0002   NOP
+0003   JMP       $18D4 // jumps to memorycell &18D4
+
+18D4   LXI  SP  #$2400 //Loads stackpointer so it points to address &2400 (Beginning of video-RAM)
+18D7   MVI  B   #$00  // loads B-register with the value #$00 (0 decimal)
+18D9   CALL      $01E6  // Calls the subroutine that starts att adres $01E6
+
+01E6   LXI  D   #$1B00  //loads D-register with value #$1B and the E-register with the value #$00
+01E9   LXI  H   #$2000  //loads H-register with value #$20 and the L-register with the value #$00(together: start address of work-RAM)
+01EC   JMP       $1A32  //Jumps to memorycell $1A32
+
+1A32   LDAX D //loads A-register (accumulator) with the value of registers D(most significant 8 bits) and E(least significant 8 bits), on first run: A = #$1B00
+1A33   MOV  M,A //puts the value of A into M, on first run: M = A(#$1B00)
+1A34   INX  H // increment H and L, on first run H = #$21 L = #$01
+1A35   INX  D // increment D and E, on first run D = #$1C E = #$01
+1A36   DCR  B // decrement B, on first run B = #$FF
+1A37   JNZ       $1A32  // jump to address $1A32(beginning of this block) if the last calculation != 0. (this will loop 256 times)
